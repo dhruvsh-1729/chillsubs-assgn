@@ -42,7 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     // Load the JSON data
     const response = await axios.get(process.env.JSON_API_URL as string);
-    console.log({response});
+    console.log({response:response.data});
     
     const magazines: Magazine[] = response.data;
 
