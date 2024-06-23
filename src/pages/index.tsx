@@ -93,7 +93,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     });
 
     initialMagazines = response.data;
-    console.log({initialMagazines});
+   // console.log({initialMagazines});
     
   } catch (error) {
     console.error('Failed to fetch magazines during server-side rendering', error);
