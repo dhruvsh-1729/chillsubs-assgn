@@ -32,6 +32,8 @@ interface Magazine {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { startDate, endDate } = req.query as { startDate: string; endDate: string };
 
+  console.log({startDate, endDate});
+
   const genreMap = genreOptions.reduce<Record<number, string>>((acc, option: GenreOption) => {
     acc[option.id] = option.label;
     return acc;
@@ -70,6 +72,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         simultaneousSubmissions:magazine.simultaneousSubmissions
       };
     });
+
+    console.log({formattedMagazines});
+    
 
     res.status(200).json(formattedMagazines);
   } catch (error) {
