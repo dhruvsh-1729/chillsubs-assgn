@@ -39,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     // Load the JSON data
-    const response = await axios.get('https://drive.google.com/uc?export=download&id=1Qz_1zlu_1UwOkpmQ4UyHvPGlHwoG9SrA');
+    const response = await axios.get(process.env.JSON_API_URL as string);
     const magazines: Magazine[] = response.data;
 
     // Filter magazines with deadlines between the given dates
