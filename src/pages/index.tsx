@@ -85,7 +85,10 @@ export const getServerSideProps: GetServerSideProps = async () => {
     const nextSunday = new Date(nextMonday);
     nextSunday.setDate(nextSunday.getDate() + 6);
 
-    const response = await axios.get<Magazine[]>('http://localhost:3000/api/magazines', { // Update URL as needed
+    const baseUrl = process.env.NODE_ENV==='production' ? `https://chillsubs-assgn.vercel.app/` : 'http://localhost:3000';
+    const apiUrl = `${baseUrl}/api/magazines`; // Adjust as per your API route
+
+    const response = await axios.get<Magazine[]>(apiUrl, { // Update URL as needed
       params: {
         startDate: nextMonday.toISOString(),
         endDate: nextSunday.toISOString()
