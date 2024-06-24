@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { genreOptions } from '../../utils/genreOptions';
 import axios from 'axios';
+import { magazineList } from '../../utils/fake_mags_data';
 
 interface GenreOption {
   id: number;
@@ -41,27 +42,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     // Load the JSON data
-    const response = await axios.get(process.env.JSON_API_URL as string);
-    console.log({response:response.data});
+    // const response = await axios.get(process.env.JSON_API_URL as string);
+    // console.log({response:response.data});
     
-    const magazines: Magazine[] = response.data;
+    const magazines:any = magazineList;
 
     // Filter magazines with deadlines between the given dates
-    const filteredMagazines = magazines.filter(magazine => {
+    const filteredMagazines = magazines.filter((magazine:any) => {
       const deadline = new Date(magazine.readingPeriods[0].deadline.$date);
       return deadline >= new Date(startDate) && deadline <= new Date(endDate);
     });
 
     // Sort the filtered magazines by deadline date in increasing order
-    const sortedMagazines = filteredMagazines.sort((a, b) => {
+    const sortedMagazines = filteredMagazines.sort((a:any, b:any) => {
       const dateA = new Date(a.readingPeriods[0].deadline.$date);
       const dateB = new Date(b.readingPeriods[0].deadline.$date);
       return dateA.getTime() - dateB.getTime();
     });
 
     // Format the magazines for output
-    const formattedMagazines = sortedMagazines.map(magazine => {
-      const genres = magazine.genres.map(genre => genreMap[genre.optionId]).join(', ');
+    const formattedMagazines = sortedMagazines.map((magazine:any) => {
+      const genres = magazine.genres.map((genre:any) => genreMap[genre.optionId]).join(', ');
       return {
         name: magazine.name,
         deadline: new Date(magazine.readingPeriods[0].deadline.$date).toLocaleDateString(),
