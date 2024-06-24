@@ -12,7 +12,7 @@ interface Magazine {
   genres: string;
   country?: string;
   yearFounded?: number;
-  responseDays:number;
+  responseDays: number;
   simultaneousSubmissions: boolean;
 }
 
@@ -77,27 +77,27 @@ export const getServerSideProps: GetServerSideProps = async () => {
     // const nextSunday = new Date(nextMonday);
     // nextSunday.setDate(nextSunday.getDate() + 6);
 
-
     //logic for filtering deadlines in the same week, doing this right now since the data does not have any 
     // magazines having deadlines next week.
-    const nextMonday = new Date();
-    nextMonday.setDate(nextMonday.getDate() + ((1 + 7 - nextMonday.getDay()) % 7));
-    const nextSunday = new Date(nextMonday);
-    nextSunday.setDate(nextSunday.getDate() + 6);
+    const thisStart = new Date();
+    const thisEnd = new Date(thisStart);
+    const dayOfWeek = thisStart.getDay(); // 0 for Sunday, 1 for Monday, ..., 6 for Saturday
+    const daysUntilSunday = 7 - dayOfWeek;
+    thisEnd.setDate(thisEnd.getDate() + daysUntilSunday);
 
-    const baseUrl = process.env.NODE_ENV==='production' ? `https://chillsubs-assgn.vercel.app/` : 'http://localhost:3000';
+    const baseUrl = process.env.NODE_ENV === 'production' ? `https://chillsubs-assgn.vercel.app/` : 'http://localhost:3000';
     const apiUrl = `${baseUrl}/api/magazines`; // Adjust as per your API route
 
     const response = await axios.get<Magazine[]>(apiUrl, { // Update URL as needed
       params: {
-        startDate: nextMonday.toISOString(),
-        endDate: nextSunday.toISOString()
+        startDate: thisStart.toISOString(),
+        endDate: thisEnd.toISOString()
       }
     });
 
     initialMagazines = response.data;
-   // console.log({initialMagazines});
-    
+    // console.log({initialMagazines});
+
   } catch (error) {
     console.error('Failed to fetch magazines during server-side rendering', error);
   }
