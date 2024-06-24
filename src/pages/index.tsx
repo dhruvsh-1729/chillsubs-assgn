@@ -82,7 +82,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     const thisStart = new Date();
     const thisEnd = new Date(thisStart);
     const dayOfWeek = thisStart.getDay(); // 0 for Sunday, 1 for Monday, ..., 6 for Saturday
-    const daysUntilSunday = 7 - dayOfWeek;
+    const daysUntilSunday = (7 - dayOfWeek)%7;
     thisEnd.setDate(thisEnd.getDate() + daysUntilSunday);
 
     const baseUrl = process.env.NODE_ENV === 'production' ? `https://chillsubs-assgn.vercel.app/` : 'http://localhost:3000';
